@@ -1,0 +1,311 @@
+/* --------------------------------------------------------------------------
+----------------------------------------------------------------------------
+Sass
+*/
+
+// Sass variable
+$padding: 10px;
+$brandColor: darkgrey;
+
+@mixin hotPinkItalic($c:hotpink) {
+  color: $c;
+  font-style: italic;
+}
+
+.post {
+  max-width: 960px;
+  margin: 0 auto;
+  margin-bottom: 3em;
+  padding: $padding;
+  border-bottom: 1px solid black;
+  border-radius: 0.5em;
+  background-color: white;
+  box-shadow: 0 0 10px black;
+
+  h2 {
+    @include hotPinkItalic(brown);
+    padding: $padding;
+  }
+
+  .content {
+    border: 5px dashed $brandColor;
+    padding: $padding;
+    border-radius: 0.5em;
+
+    p {
+      text-align: right;
+      color:$brandColor;
+    }
+
+  }
+}
+
+
+#other p {
+  @include hotPinkItalic;
+}
+
+
+%notification {
+  border: 5px solid black;
+  border-radius: 0.5em;
+  text-align: center;
+  background-color: $brandColor;
+  padding: $padding;
+  font-size: 150%;
+  max-width: 500px / 960px * 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.plain {
+  @extend %notification;
+  color: yellow;
+}
+
+.error {
+  @extend %notification;
+  color: red;
+}
+
+.success {
+  @extend %notification;
+  color: blue;
+}
+
+/* --------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Flexbox vs Grid
+
+The basic difference between CSS Grid Layout and CSS Flexbox Layout is that -
+* Flexbox was designed for layout in one dimension - either a row or a column.
+* Grid was designed for two-dimensional layout - rows, and columns at the same time.
+
+This means that if you’re laying out items in one direction (for example three buttons inside a header), then you should use Flexbox
+
+Flexbox also has slightly more support than grid */
+
+
+/* ---------------------------------------------------------------------------
+------------------------------------------------------------------------------
+Flexbox
+*/
+
+// The Flexible Box Layout Module, makes it easier to design flexible responsive layout structure without using float or positioning.
+
+// The flex container becomes flexible by setting the display property to flex
+.flex-container {
+ display: flex;
+
+ // The flex-direction property defines in which direction the container wants to stack the flex items
+ flex-direction: row;
+ // flex-direction: column; -> mobile version
+ // flex-direction: column-reverse;
+
+ // The wrap value specifies that the flex items will wrap if necessary
+ // flex-wrap: wrap-reverse;
+ flex-wrap: wrap;
+
+ // This defines the alignment along the main axis. It helps distribute extra free space left over when either all the flex items on a line are inflexible, or are flexible but have reached their maximum size.
+ justify-content: space-around;
+ // justify-content: center;
+
+  // This defines the default behaviour for how flex items are laid out along the cross axis on the current line.
+ align-items: center;
+
+ div {
+  border: 1px black solid;
+  padding: 10px;
+  width: 20%;
+ }
+}
+
+// ** Mobile first version **
+.m_flex-container {
+ display: flex;
+ flex-direction: column;
+ flex-wrap: wrap;
+ justify-content: space-around;
+ align-items: center;
+
+ div {
+  border: 1px black solid;
+  padding: 10px;
+  width: 50%;
+ }
+}
+
+// If the screen width is 600px or larger, change the flex-direction to row and the width of the div to 20%
+@media (min-width: 600px) {
+  .m_flex-container {
+    flex-direction: row;
+
+    div {
+      width: 20%;
+    }
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+------------------------------------------------------------------------------
+Grid
+*/
+
+// The CSS Grid Layout Module offers a grid-based layout system, with rows and columns, making it easier to design web pages without having to use floats and positioning.
+
+
+.grid-container {
+  display: grid;
+  // The grid-template-columns property defines the number of columns in your grid layout, and it can define the width of each column.
+  grid-template-columns: auto auto auto auto; // 4 columns
+  // can also be used to define the column widths
+  // grid-template-columns: 80px 200px auto 40px;
+
+  // The grid-template-rows property defines the height of each row.
+  // grid-template-rows: 80px 200px;
+  grid-gap: 10px;
+  background-color: hotpink;
+  padding: 20px;
+
+  div {
+    background-color: black;
+    border: 5px solid white;
+    text-align: center;
+    font-size: 30px;
+    color: white;
+  }
+}
+
+// ** Mobile first version **
+.responsive-grid-container {
+  display: grid;
+  grid-template-columns: auto; // 1 column
+  grid-gap: 2vw;
+  background-color: hotpink;
+
+  div {
+    background-color: black;
+    border: 5px solid white;
+    text-align: center;
+    font-size: 30px;
+    color: white;
+  }
+}
+
+@media (min-width: 600px) {
+    .responsive-grid-container {
+        grid-template-columns: auto auto auto;// change to 3 columns when the page width is 600px or greater
+    }
+}
+
+/*
+By default, a container has one grid item for each column, in each row, but you can style the grid items so that they will span multiple columns and/or rows.
+
+The grid-column property defines on which column(s) to place an item.
+Make "item1" start on line 1 and end on line 5
+.item1 {
+  grid-column: 1 / 5;
+
+  Make "item1" start on column 2 and span 3 columns
+  grid-column: 2 / span 3;
+}
+
+The grid-row property is a shorthand property for the grid-row-start and the grid-row-end properties.
+
+Make "item1" start on row-line 1 and end on row-line 4
+.item1 {
+  grid-row: 1 / 4;
+}
+*/
+
+
+/* ---------------------------------------------------------------------------
+------------------------------------------------------------------------------
+Responsive layout page - responsive.html.erb
+*/
+
+.r_grid-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// This will create a 3 by 3 grid with fixed width columns either side and a center row that stretches to fill the space left after the top and bottom rows take up their content’s space. Setting the header and footer to grid-column: span 3; will make them take up an entire row each.
+
+@media (min-width: 768px) {
+  .r_grid-container {
+    display: grid;
+    // Fr is a fractional unit and 1fr is for 1 part of the available space
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-rows: auto 1fr auto;
+
+  }
+}
+
+.r_header {
+  grid-column: span 3;
+  padding: 30px;
+  text-align: center;
+  font-size: 1.4em;
+  background-color: #369;
+  color: white;
+}
+
+main {
+  /* The flex property sets the flexible length on flexible items
+  flex: 1 = Let all the flexible items be the same length, regardless of its content */
+  flex: 1;
+  padding: 20px;
+}
+
+.r_nav {
+  background-color: #f90;
+  padding: 20px;
+}
+
+aside {
+  padding: 20px;
+  background-color: #936;
+}
+
+.r_footer {
+  // grid-column: span 3; - let the element span 3 columns
+  grid-column: span 3;
+  padding: 30px;
+  text-align: center;
+  font-size: 1.4em;
+  background-color: #690;
+  color: white;
+}
+
+.r_h1 {
+  margin-bottom: 1em;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+/* ---------------------------------------------------------------------------
+------------------------------------------------------------------------------
+Media Queries
+
+
+The @media rule is used in media queries to apply different styles for different media types/devices.
+
+Extra small devices (phones, 600px and down)
+@media only screen and (max-width: 600px)
+
+Small devices (portrait tablets and large phones, 600px and up)
+@media only screen and (min-width: 600px)
+
+Medium devices (landscape tablets, 768px and up)
+@media only screen and (min-width: 768px)
+
+Large devices (laptops/desktops, 992px and up)
+@media only screen and (min-width: 992px)
+
+Extra large devices (large laptops and desktops, 1200px and up)
+@media only screen and (min-width: 1200px)
+
+*/
